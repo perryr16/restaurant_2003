@@ -46,4 +46,32 @@ class RestaurantTest < Minitest::Test
 
     assert_equal ['Burrata', 'Pizzetta', 'Ravioli'], restaurant.dishes
   end
+
+  def test_is_it_open_for_lunch
+    restaurant1 = Restaurant.new('10:00', 'Fuel Cafe')
+    restaurant2 = Restaurant.new('16:00', 'Il Poggio')
+
+    assert_equal true, restaurant1.open_for_lunch?
+    assert_equal false, restaurant2.open_for_lunch?
+  end
+
+  def test_if_menu_dish_names_are_all_caps
+    restaurant2 = Restaurant.new('16:00', 'Il Poggio')
+    restaurant2.add_dish('Burrata')
+    restaurant2.add_dish('Pizzetta')
+    restaurant2.add_dish('Ravioli')
+
+    assert_equal ["BURRATA", "PIZZETTA", "RAVIOLI"], restaurant2.menu_dish_names
+  end
+
+  def test_it_announces_closing_time
+    restaurant1 = Restaurant.new('10:00', 'Fuel Cafe')
+    restaurant2 = Restaurant.new('16:00', 'Il Poggio')
+
+    restaurant1.closing_time(1)
+    restaurant2.closing_time(7)
+
+    assert_equal "Fuel Cafe will be closing at 11:00AM", restaurant1.announce_closing_time
+    assert_equal "Il Poggio will be closing at 11:00PM", restaurant2.announce_closing_time
+  end
 end
